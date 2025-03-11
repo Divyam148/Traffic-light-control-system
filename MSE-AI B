@@ -1,0 +1,124 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNYJZR3y8DV2LJ+aSoY/8+L",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Divyam148/Traffic-light-control-system/blob/main/MSE-AI%20B\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 7,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 664
+        },
+        "id": "5ddkiIYji9h9",
+        "outputId": "51ab8164-0173-464e-ae04-2f598aa99292"
+      },
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 600x600 with 1 Axes>"
+            ],
+            "image/png": "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\n"
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "error",
+          "ename": "KeyboardInterrupt",
+          "evalue": "",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-7-e124655cefcd>\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m     55\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     56\u001b[0m             \u001b[0mdraw_traffic_light\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstate\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcar_positions\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 57\u001b[0;31m             \u001b[0mtime\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msleep\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;31mKeyboardInterrupt\u001b[0m: "
+          ]
+        }
+      ],
+      "source": [
+        "import time\n",
+        "import matplotlib.pyplot as plt\n",
+        "import matplotlib.patches as patches\n",
+        "from IPython.display import display, clear_output\n",
+        "import numpy as np\n",
+        "\n",
+        "def draw_traffic_light(state, car_positions):\n",
+        "    fig, ax = plt.subplots(figsize=(6, 6))\n",
+        "    ax.set_xlim(0, 6)\n",
+        "    ax.set_ylim(0, 6)\n",
+        "    ax.set_xticks([])\n",
+        "    ax.set_yticks([])\n",
+        "    ax.set_frame_on(False)\n",
+        "\n",
+        "    # Draw traffic light box\n",
+        "    box = patches.Rectangle((2, 1), 2, 4, linewidth=2, edgecolor='black', facecolor='gray')\n",
+        "    ax.add_patch(box)\n",
+        "\n",
+        "    # Draw lights\n",
+        "    colors = {'red': 'gray', 'yellow': 'gray', 'green': 'gray'}\n",
+        "    colors[state] = state  # Activate the current light\n",
+        "\n",
+        "    red_light = patches.Circle((3, 4.5), 0.5, color=colors['red'])\n",
+        "    yellow_light = patches.Circle((3, 3), 0.5, color=colors['yellow'])\n",
+        "    green_light = patches.Circle((3, 1.5), 0.5, color=colors['green'])\n",
+        "\n",
+        "    ax.add_patch(red_light)\n",
+        "    ax.add_patch(yellow_light)\n",
+        "    ax.add_patch(green_light)\n",
+        "\n",
+        "    # Draw moving cars (dots)\n",
+        "    for x in car_positions:\n",
+        "        ax.plot(x, 0.5, 'bo', markersize=10)  # Cars as blue dots\n",
+        "\n",
+        "    display(fig)\n",
+        "    plt.close(fig)\n",
+        "\n",
+        "# Traffic light cycle\n",
+        "states = ['red', 'green', 'yellow']\n",
+        "timings = [3, 3, 2]  # Time delays in seconds\n",
+        "car_positions = np.linspace(-1, 0, 5)  # Initial positions of cars\n",
+        "\n",
+        "while True:\n",
+        "    for state, delay in zip(states, timings):\n",
+        "        for _ in range(delay):\n",
+        "            clear_output(wait=True)\n",
+        "\n",
+        "            if state == 'red':\n",
+        "                # Stop cars if red\n",
+        "                car_positions = car_positions\n",
+        "            else:\n",
+        "                # Move cars if green or yellow\n",
+        "                car_positions += 0.5  # Cars move forward\n",
+        "                car_positions = np.where(car_positions > 6, -1, car_positions)  # Reset if off screen\n",
+        "\n",
+        "            draw_traffic_light(state, car_positions)\n",
+        "            time.sleep(1)\n"
+      ]
+    }
+  ]
+}
